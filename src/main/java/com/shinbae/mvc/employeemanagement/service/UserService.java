@@ -5,6 +5,7 @@ import com.shinbae.mvc.employeemanagement.entity.User;
 import com.shinbae.mvc.employeemanagement.repository.RoleRepository;
 import com.shinbae.mvc.employeemanagement.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -13,6 +14,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
@@ -38,11 +40,23 @@ public class UserService {
     }
 
     public User updateUser(User user, Long id) {
-        User existingUser = userRepository.findById(id).orElse(null);
+        User existingUser = findUserById(id);
         if (existingUser == null) {
             throw new RuntimeException("User not found");
         }
-        return userRepository.save(user);
+        existingUser.setUserName(user.getUserName());
+        existingUser.setEmail(user.getEmail());
+        return userRepository.save(existingUser);
+    }
+
+    public void deleteUser(Long id) {
+        User existingUser = findUserById(id);
+        log.info("deleteUser() : {}", existingUser.getId());
+        if (existingUser == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        userRepository.deleteById(id);
     }
 
 

@@ -25,4 +25,21 @@ public class UserController {
         log.info("addUser() : {}", user);
         return userService.createUser(user);
     }
+
+    @PatchMapping("/update-user/{id}")
+    public User updateUser(@RequestBody User user, @PathVariable Long id) {
+        log.info("updateUser() : {}", user);
+        return userService.updateUser(user, id);
+    }
+
+    @DeleteMapping("/delete-user/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        try {
+            userService.deleteUser(id);
+            return "User deleted successfully";
+        } catch (Exception e) {
+            log.error("deleteUser() : {}", e.getMessage());
+            return "Something went wrong";
+        }
+    }
 }
