@@ -12,6 +12,7 @@
     <h2 class="text-center">List Users</h2>
     <hr/>
     <a th:href="@{/users-mvc/add-user}" class="btn btn-primary mb-2">Add User</a>
+    <a th:href="@{/logout}" class="btn btn-secondary mb-2 float-right">Log out</a>
     <table class="table table-bordered table-striped" id="usersTable">
         <thead>
         <tr>
@@ -22,8 +23,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user: ${users}">
-            <th scope="row">1</th>
+        <tr th:each="user,col: ${users}">
+            <th th:text="${col.index + 1}" scope="row"></th>
             <td th:text="${user.userName}"></td>
             <td th:text="${user.email}"></td>
             <td>

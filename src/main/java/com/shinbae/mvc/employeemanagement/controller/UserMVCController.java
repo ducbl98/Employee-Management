@@ -1,13 +1,17 @@
 package com.shinbae.mvc.employeemanagement.controller;
 
+import com.shinbae.mvc.employeemanagement.entity.Role;
 import com.shinbae.mvc.employeemanagement.entity.User;
+import com.shinbae.mvc.employeemanagement.service.RoleService;
 import com.shinbae.mvc.employeemanagement.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -16,6 +20,7 @@ import java.util.List;
 @RequestMapping(value = "/users-mvc")
 public class UserMVCController {
     private final UserService userService;
+    private final RoleService roleService;
 
     @GetMapping({"/list-users","/","list"})
     public ModelAndView listUsers() {
@@ -31,13 +36,18 @@ public class UserMVCController {
         log.info("addUser()");
         ModelAndView modelAndView = new ModelAndView("users-mvc/add-user");
         User newUser = new User();
+        List<Role> roles = roleService.getAllRole();
         modelAndView.addObject("user",newUser);
+        modelAndView.addObject("roles",roles);
         return modelAndView;
     }
 
     @PostMapping("/create-user")
-    public String createUser(@ModelAttribute User user) {
+    public String createUser(@Valid @ModelAttribute User user, BindingResult bindingResult) {
         log.info("createUser()");
+        if (bindingResult.hasErrors()) {
+            return "users-mvc/add-user";
+        }
         userService.createUser(user);
         return "redirect:/users-mvc/list-users";
     }
