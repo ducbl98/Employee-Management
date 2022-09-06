@@ -62,6 +62,7 @@ public class UserMVCController {
         log.info("editUser()");
         ModelAndView modelAndView = new ModelAndView("users-mvc/edit-user");
         User userToEdit = userService.findUserById(id);
+        userToEdit.setPassword("");
         List<Role> roles = roleService.getAllRole();
         modelAndView.addObject("roles", roles);
         modelAndView.addObject("user", userToEdit);
@@ -69,9 +70,13 @@ public class UserMVCController {
     }
 
     @PostMapping("/update-user/{id}")
-    public String updateUser(@PathVariable Long id, @ModelAttribute User user) {
+    public String updateUser(@PathVariable Long id, @ModelAttribute User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         log.info("updateUser()");
+        if (bindingResult.hasErrors()) {
+            return "users-mvc/edit-user";
+        }
         userService.updateUser(user, id);
+        redirectAttributes.addFlashAttribute("success_update", "User updated successfully");
         return "redirect:/users-mvc/list-users";
     }
 

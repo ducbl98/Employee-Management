@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Table 09</title>
     <meta charset="utf-8">
@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" th:href="@{/css/style_2.css}">
-
+    <link rel="stylesheet" th:href="@{/css/style_3.css}">
+    <link rel="stylesheet" th:href="@{/css/ionicons.min.css}">
 </head>
 <body>
 <section class="ftco-section">
@@ -20,90 +21,58 @@
                 <h2 class="heading-section">List Employees</h2>
             </div>
         </div>
+        <div class="row mb-5">
+            <div class="col-md-12 mb-2">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a th:href="@{/employees-mvc/add-employee}" type="button" class="btn mb-2 mb-md-0 btn-round btn-outline btn-block">Add Employee</a>
+                    </div>
+                    <div class="col-md-3">
+                        <a th:href="@{/logout}" type="button" class="btn mb-2 mb-md-0 btn-round btn-outline btn-block float-right">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="table-wrap">
                     <table class="table table-striped">
                         <thead>
                         <tr>
-                            <th>No.</th>
-                            <th>Employee Name</th>
-                            <th>Email</th>
-                            <th>Phone Number</th>
-                            <th>Birthday</th>
-                            <th>Country</th>
+                            <th class="block" style="width: 1%;white-space: nowrap">No.</th>
+                            <th class="block" style="width: 1%;white-space: nowrap">Employee Name</th>
+                            <th class="block" style="width: 1%;white-space: nowrap">Department</th>
+                            <th class="block" style="width: 1%;white-space: nowrap">Position</th>
+                            <th class="block" style="width: 1%;white-space: nowrap">Email</th>
+                            <th class="block" style="width: 1%;white-space: nowrap">Phone Number</th>
+                            <th class="block" style="width: 1%;white-space: nowrap">Birthday</th>
+                            <th class="block" style="width: 1%;white-space: nowrap">Country</th>
+                            <th class="block" style="width: 1%;white-space: nowrap">Address</th>
+                            <th class="block" style="width: 1%;white-space: nowrap">Hours</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark Otto</td>
-                            <td>Japan</td>
-                            <td>$3000</td>
-                            <td>$1200</td>
-                            <td><a href="#" class="btn btn-success">Progress</a></td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">1001</th>
-                            <td>Mark Otto</td>
-                            <td>Japan</td>
-                            <td>$3000</td>
-                            <td>$1200</td>
-                            <td><a href="#" class="btn btn-warning">Open</a></td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">1001</th>
-                            <td>Mark Otto</td>
-                            <td>Japan</td>
-                            <td>$3000</td>
-                            <td>$1200</td>
-                            <td><a href="#" class="btn btn-danger">On hold</a></td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">1001</th>
-                            <td>Mark Otto</td>
-                            <td>Japan</td>
-                            <td>$3000</td>
-                            <td>$1200</td>
-                            <td><a href="#" class="btn btn-success">Progress</a></td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">1001</th>
-                            <td>Mark Otto</td>
-                            <td>Japan</td>
-                            <td>$3000</td>
-                            <td>$1200</td>
-                            <td><a href="#" class="btn btn-danger">On hold</a></td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">1001</th>
-                            <td>Mark Otto</td>
-                            <td>Japan</td>
-                            <td>$3000</td>
-                            <td>$1200</td>
-                            <td><a href="#" class="btn btn-warning">Open</a></td>
-
-                        <tr>
-                            <th scope="row">1001</th>
-                            <td>Mark Otto</td>
-                            <td>Japan</td>
-                            <td>$3000</td>
-                            <td>$1200</td>
-                            <td><a href="#" class="btn btn-warning">Open</a></td>
-                        </tr>
-
-                        <tr>
-                            <th scope="row">1001</th>
-                            <td>Mark Otto</td>
-                            <td>Japan</td>
-                            <td>$3000</td>
-                            <td>$1200</td>
-                            <td><a href="#" class="btn btn-success">Progress</a></td>
+                        <tr th:each="employee,col: ${employees}">
+                            <th scope="row" th:text="${col.index +1}"></th>
+                            <td th:text="${employee.name}"></td>
+                            <td th:text="${employee.department.name}"></td>
+                            <td th:text="${employee.position.name}"></td>
+                            <td th:text="${employee.email}"></td>
+                            <td th:text="${employee.phoneNumber}"></td>
+                            <td th:text="${#dates.format(employee.birthDay,'dd-MM-yyyy')}"></td>
+                            <td th:text="${employee.country}"></td>
+                            <td th:text="${employee.address}"></td>
+                            <th:block th:switch="${employee.hours.name}">
+                                <div th:case="'FULL_TIME'">
+                                    <td><a href="#" class="btn btn-success">Full Time</a></td>
+                                </div>
+                                <div th:case="'PART_TIME'">
+                                    <td><a href="#" class="btn btn-warning">Part Time</a></td>
+                                </div>
+                                <div th:case="'FREELANCER'">
+                                    <td><a href="#" class="btn btn-danger">Freelancer</a></td>
+                                </div>
+                            </th:block>
                         </tr>
                         </tbody>
                     </table>
@@ -116,7 +85,7 @@
 <script th:src="@{/js/jquery.min.js}"></script>
 <script th:src="@{/js/popper.js}"></script>
 <script th:src="@{/js/bootstrap.min.js}"></script>
-<script th:src="@{js/main.js}"></script>
+<script th:src="@{/js/main.js}"></script>
 
 </body>
 </html>

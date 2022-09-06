@@ -10,8 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @EnableWebSecurity
@@ -39,13 +37,15 @@ public class AppSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http.csrf().disable()
+                .authorizeRequests()
                 .antMatchers("/employees-mvc/**").hasAnyRole("ADMIN", "USER")
                 .antMatchers("/users-mvc/**").hasAnyRole("ADMIN")
                 .antMatchers("/roles-mvc/**").hasRole("ADMIN")
+                .antMatchers("/users/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().defaultSuccessUrl("/employees-mvc/list-employees").permitAll()
+                .formLogin().defaultSuccessUrl("/employees-mvc/list-employees").permitAll().successHandler(myAuthenticationSuccessHandler())
                 .and()
                 .logout().permitAll();
     }

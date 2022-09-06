@@ -1,5 +1,6 @@
 package com.shinbae.mvc.employeemanagement.controller.mvc;
 
+import com.shinbae.mvc.employeemanagement.entity.Employee;
 import com.shinbae.mvc.employeemanagement.service.EmployeeService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +21,15 @@ public class EmployeeMVCController {
         log.info("listEmployees()");
         ModelAndView modelAndView = new ModelAndView("employees-mvc/list-employees");
         modelAndView.addObject("employees",employeeService.getEmployees());
+        return modelAndView;
+    }
+
+    @GetMapping("/add-employee")
+    public ModelAndView addEmployee() {
+        log.info("addEmployee()");
+        Employee employee = new Employee();
+        ModelAndView modelAndView = new ModelAndView("employees-mvc/add-employee");
+        modelAndView.addObject("employee",employee);
         return modelAndView;
     }
 }

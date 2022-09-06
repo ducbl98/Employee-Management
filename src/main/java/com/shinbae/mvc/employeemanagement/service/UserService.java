@@ -47,6 +47,7 @@ public class UserService {
             throw new RuntimeException("User not found");
         }
         existingUser.setUserName(user.getUserName());
+        existingUser.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         existingUser.setEmail(user.getEmail());
         existingUser.setRoles(user.getRoles());
         return userRepository.save(existingUser);

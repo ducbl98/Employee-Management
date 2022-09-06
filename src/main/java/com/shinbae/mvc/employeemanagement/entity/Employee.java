@@ -40,10 +40,13 @@ public class Employee {
     @Column(name = "hired_date")
     private Date hireDate;
 
+    @Enumerated(EnumType.STRING)
     private Department department;
 
+    @Enumerated(EnumType.STRING)
     private Hour hours;
 
+    @Enumerated(EnumType.STRING)
     private Position position;
 
     private String country;

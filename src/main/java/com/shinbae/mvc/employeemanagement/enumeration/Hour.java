@@ -1,6 +1,7 @@
 package com.shinbae.mvc.employeemanagement.enumeration;
 
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Stream;
 
 public enum Hour {
@@ -28,8 +29,9 @@ public enum Hour {
 
     private static final List<Hour> HOURS = List.of(values());
     private static final int SIZE = HOURS.size();
+    private static final Random RANDOM = new Random();
 
     public static Hour randomHour()  {
-        return HOURS.get((int) (SIZE * Math.random()));
+        return HOURS.get(RANDOM.nextInt(SIZE));
     }
 }

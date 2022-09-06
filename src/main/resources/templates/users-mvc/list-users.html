@@ -12,8 +12,9 @@
     <h2 class="text-center">List Users</h2>
     <hr/>
     <div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
+    <div class="alert alert-primary" role="alert" th:text="${success_update}" th:if="${success_update}"></div>
     <a th:href="@{/users-mvc/add-user}" class="btn btn-primary mb-2">Add User</a>
-    <a th:href="@{/roles-mvc/list-roles}" class="btn btn-info mb-2">Manage Roles</a>
+<!--    <a th:href="@{/roles-mvc/list-roles}" class="btn btn-info mb-2">Manage Roles</a>-->
     <a th:href="@{/logout}" class="btn btn-secondary mb-2 float-right">Log out</a>
     <table class="table table-bordered table-striped" id="usersTable">
         <thead>

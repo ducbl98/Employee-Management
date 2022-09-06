@@ -28,8 +28,8 @@ public class User {
     private String userName;
 
 
-    @Email(message = "{Email.User.Email}")
     @NotNull(message = "{NotNull.User.Email}")
+    @Email(message = "{Email.User.Email}")
     private String email;
 
     @NotNull
