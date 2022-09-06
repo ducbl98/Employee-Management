@@ -6,6 +6,7 @@ import com.shinbae.mvc.employeemanagement.repository.RoleRepository;
 import com.shinbae.mvc.employeemanagement.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -19,14 +20,15 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
     public User findByUserName(String userName) {
         return userRepository.findByUserName(userName);
     }
 
     public User createUser(User user) {
-        Role role = roleRepository.findById(1L).orElse(null);
-        Set<Role> roles = new HashSet<>();
-        roles.add(role);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        Set<Role> roles = new HashSet<>(user.getRoles());
         user.setRoles(roles);
         return userRepository.save(user);
     }
@@ -46,15 +48,13 @@ public class UserService {
         }
         existingUser.setUserName(user.getUserName());
         existingUser.setEmail(user.getEmail());
+        existingUser.setRoles(user.getRoles());
         return userRepository.save(existingUser);
     }
 
     public void deleteUser(Long id) {
         User existingUser = findUserById(id);
         log.info("deleteUser() : {}", existingUser.getId());
-        if (existingUser == null) {
-            throw new RuntimeException("User not found");
-        }
 
         userRepository.deleteById(id);
     }

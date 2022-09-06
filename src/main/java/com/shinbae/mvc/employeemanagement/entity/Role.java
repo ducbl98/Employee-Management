@@ -28,4 +28,8 @@ public class Role {
     @JsonIgnore
     private Set<User> users = new HashSet<>();
 
+    public Role(Long id, String roleName) {
+        this.id = id;
+        this.roleName = roleName;
+    }
 }

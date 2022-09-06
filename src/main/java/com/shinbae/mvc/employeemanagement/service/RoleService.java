@@ -21,4 +21,25 @@ public class RoleService {
     public List<Role> getAllRole() {
         return roleRepository.findAll();
     }
+
+    public Role createRole(Role role) {
+        String roleName = role.getRoleName().toUpperCase();
+        if (roleName.startsWith("ROLE_")) {
+            role.setRoleName(roleName);
+        } else {
+            role.setRoleName("ROLE_" + roleName);
+        }
+        return roleRepository.save(role);
+    }
+
+    public Role findRoleById(Long id) {
+        return roleRepository.findById(id).orElse(null);
+    }
+
+    public void deleteRole(Long id) {
+        Role existingRole = findRoleById(id);
+        log.info("deleteRole() : {}", existingRole.getId());
+
+        roleRepository.deleteById(id);
+    }
 }

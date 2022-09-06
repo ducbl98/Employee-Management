@@ -1,4 +1,4 @@
-package com.shinbae.mvc.employeemanagement.controller;
+package com.shinbae.mvc.employeemanagement.controller.restapi;
 
 import com.shinbae.mvc.employeemanagement.entity.User;
 import com.shinbae.mvc.employeemanagement.service.UserService;

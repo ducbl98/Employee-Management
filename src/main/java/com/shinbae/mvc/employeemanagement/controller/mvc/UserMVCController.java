@@ -1,5 +1,6 @@
-package com.shinbae.mvc.employeemanagement.controller;
+package com.shinbae.mvc.employeemanagement.controller.mvc;
 
+import com.shinbae.mvc.employeemanagement.entity.Employee;
 import com.shinbae.mvc.employeemanagement.entity.Role;
 import com.shinbae.mvc.employeemanagement.entity.User;
 import com.shinbae.mvc.employeemanagement.service.RoleService;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -22,12 +24,14 @@ public class UserMVCController {
     private final UserService userService;
     private final RoleService roleService;
 
-    @GetMapping({"/list-users","/","list"})
+    @GetMapping({"/list-users", "/", "list"})
     public ModelAndView listUsers() {
         log.info("listUsers()");
+        Employee employee = new Employee();
+        employee.setRandomCountry();
         ModelAndView modelAndView = new ModelAndView("users-mvc/list-users");
         List<User> users = userService.getAllUser();
-        modelAndView.addObject("users",users);
+        modelAndView.addObject("users", users);
         return modelAndView;
     }
 
@@ -37,18 +41,19 @@ public class UserMVCController {
         ModelAndView modelAndView = new ModelAndView("users-mvc/add-user");
         User newUser = new User();
         List<Role> roles = roleService.getAllRole();
-        modelAndView.addObject("user",newUser);
-        modelAndView.addObject("roles",roles);
+        modelAndView.addObject("user", newUser);
+        modelAndView.addObject("roles", roles);
         return modelAndView;
     }
 
     @PostMapping("/create-user")
-    public String createUser(@Valid @ModelAttribute User user, BindingResult bindingResult) {
+    public String createUser(@Valid @ModelAttribute User user, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         log.info("createUser()");
         if (bindingResult.hasErrors()) {
             return "users-mvc/add-user";
         }
         userService.createUser(user);
+        redirectAttributes.addFlashAttribute("success", "User created successfully");
         return "redirect:/users-mvc/list-users";
     }
 
@@ -57,14 +62,16 @@ public class UserMVCController {
         log.info("editUser()");
         ModelAndView modelAndView = new ModelAndView("users-mvc/edit-user");
         User userToEdit = userService.findUserById(id);
-        modelAndView.addObject("userEdit",userToEdit);
+        List<Role> roles = roleService.getAllRole();
+        modelAndView.addObject("roles", roles);
+        modelAndView.addObject("user", userToEdit);
         return modelAndView;
     }
 
-    @PostMapping("/update-user")
-    public String updateUser(@ModelAttribute User user) {
+    @PostMapping("/update-user/{id}")
+    public String updateUser(@PathVariable Long id, @ModelAttribute User user) {
         log.info("updateUser()");
-        userService.updateUser(user, user.getId());
+        userService.updateUser(user, id);
         return "redirect:/users-mvc/list-users";
     }
 

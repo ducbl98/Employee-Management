@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>List roles</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,100,300,700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700,800,900" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style_1.css}">
+    <link rel="stylesheet" th:href="@{/css/ionicons.min.css}">
+
+</head>
+<body>
+<section class="ftco-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center mb-5">
+                <h2 class="heading-section">List Roles</h2>
+            </div>
+        </div>
+        <div class="row mb-5">
+            <div class="col-md-12 mb-3">
+                <div class="row">
+                    <div class="col-md-3">
+                        <button type="button" class="btn mb-2 mb-md-0 btn-outline-secondary btn-block"
+                                data-toggle="modal" data-target="#exampleModalCenter">Add Role
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-wrap">
+                    <table class="table table-responsive-xl">
+                        <thead>
+                        <tr>
+                            <th style="font-size: 16px">No.</th>
+                            <th style="font-size: 16px">Role Name</th>
+                            <th style="font-size: 16px">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="role,col: ${roles}" class="alert" role="alert">
+                            <td class="d-flex align-items-center">
+                                <div class="pl-3">
+                                    <span th:text="${col.index + 1}"></span>
+                                </div>
+                            </td>
+                            <td th:text="${role.roleName}"></td>
+                            <td>
+                                <a th:href="@{/roles-mvc/delete-role/{id}(id=${role.id})}" type="button" class="close"
+                                   style="float: left" data-dismiss="alert"
+                                   aria-label="Close">
+                                    <span aria-hidden="true"><i class="fa fa-close fa-2x"></i></span>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--Modal Create Role-->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close d-flex align-items-center justify-content-center"
+                        data-dismiss="modal" aria-label="Close">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            <div class="modal-body p-4 py-5 p-md-5">
+                <h3 class="text-center mb-3">Create Role</h3>
+                <form th:action="@{/roles-mvc/create-role}" th:object="${role}" class="signup-form" method="POST">
+                    <div class="form-group mb-2">
+                        <label for="role_name">Role Name</label>
+                        <input type="text" th:field="*{roleName}" class="form-control" id="role_name"
+                               placeholder="Enter Role">
+                    </div>
+                    <div class="form-group mb-2">
+                        <button type="submit" class="form-control btn btn-primary rounded submit px-3">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/jquery.min.js}"></script>
+<script th:src="@{/js/popper.js}"></script>
+<script th:src="@{/js/bootstrap.min.js}"></script>
+<script th:src="@{js/main.js}"></script>
+
+</body>
+</html>
+
